@@ -18,23 +18,26 @@ class Game {
         this.width = 720;
         this.playFieldRows = 7;
         this.playFieldColumns = 20;
-        this.playField = new Playfield(this.height,this.width, this.gameScreen, this.gameContainer);
+        
         this.spawnRow = 3;
         this.spawnColumn = 0;
         this.destinationRow = 3;
         this.destinationColumn = 19;
-        this.gameIsOverFlag = false;
-        this.spawn = this.playField.getCellRowColumnCenterPosition(this.spawnRow, this.spawnColumn);    
-        this.destination = this.playField.getCellRowColumnCenterPosition(this.destinationRow, this.destinationColumn);  
-        this.uiManager = new UIManager(this.lives,this.money,this.currentWave, this.gameScreen, this.waveSpan, this.moneySpan, this.liveSpan, this.placeTowerImg, this.playField);
-        this.waveManager = new WaveManager(this.playField, this.currentWave, this.spawn, this.destination);
+        this.gameIsOverFlag = false;  
+        
         this.initiate();
     }
 
     initiate () {
         this.startScreen.style.display = "none";
         this.gameScreen.style.display = "grid";
+        this.playField = new Playfield(this.height,this.width, this.gameScreen, this.gameContainer);
         this.playField.initiate();
+        this.spawn = this.playField.getCellFromRowCol(this.spawnRow, this.spawnColumn);    
+        this.destination = this.playField.getCellFromRowCol(this.destinationRow, this.destinationColumn);
+        console.log(`Destination from game: ${this.destination}`)
+        this.uiManager = new UIManager(this ,this.lives,this.money,this.currentWave, this.gameScreen, this.waveSpan, this.moneySpan, this.liveSpan, this.placeTowerImg, this.playField);
+        this.waveManager = new WaveManager(this ,this.playField, this.currentWave, this.spawn, this.destination);
         // this.playField.toggleGridVisibility();
         this.uiManager.initiate();
         this.waveManager.startWave();
@@ -47,9 +50,10 @@ class Game {
         // troops walking
         let currentPathTroops = this.playField.findPathToDestination(this.spawnRow, this.spawnColumn, this.destinationRow, this.destinationColumn);   
         console.log(currentPathTroops);
+        this.playField.markActivePathCells(currentPathTroops);
         if (this.waveManager.troops.length > 0) { 
             this.waveManager.troops.forEach((troop) => {
-                troop.move(currentPathTroops);
+                troop.move(currentPathTroops, this.destination);
             });
         }
         if (this.lives <= 0) {
@@ -66,6 +70,17 @@ class Game {
             });
         });
 
+        // checking if tower is in range of any troop and should be doing a shooting animation
+        this.uiManager.towers.forEach((tower) => {
+            this.waveManager.troops.forEach((troop) => {
+                if (tower.isInRadius(troop)) {
+                    tower.startShootingAnimation();
+                } else {
+                    tower.stopShootingAnimation();
+                }
+            });
+        });
+
         // checking if there are any troops left on the field and no more needed for spawn
         if (this.waveManager.troops.length === 0) {
             // this.waveManager.currentWave += 1;
@@ -77,6 +92,44 @@ class Game {
 
         setTimeout(() => this.gameLoop(), 1000); // Call gameLoop every second
     }
+
+    // gameLoop() {
+    //     if (this.gameIsOverFlag) return;
+
+    //     // Checking if damage is taken for each troop + tower shooting animation
+    //     this.waveManager.troops.forEach((troop) => {
+    //         this.uiManager.towers.forEach((tower) => {
+    //             if (tower.isInRadius(troop)) {
+    //                 tower.startShootingAnimation();
+    //                 troop.takingDamage(tower);
+    //             } else {
+    //                 tower.stopShootingAnimation();
+    //             }
+    //         });
+    //     });
+
+    //     if (this.lives <= 0) {
+    //         this.gameOver();
+    //         return;
+    //     }
+
+    //     setTimeout(() => this.gameLoop(), 100); // Call gameLoop every 100 milliseconds
+    // }
+
+    // movementLoop() {
+    //     if (this.gameIsOverFlag) return;
+
+    //     // Troops walking
+    //     let currentPathTroops = this.playField.findPathToDestination(this.spawnRow, this.spawnColumn, this.destinationRow, this.destinationColumn);
+    //     console.log(currentPathTroops);
+    //     if (this.waveManager.troops.length > 0) {
+    //         this.waveManager.troops.forEach((troop) => {
+    //             troop.move(currentPathTroops);
+    //         });
+    //     }
+
+    //     setTimeout(() => this.movementLoop(), 1000); // Call movementLoop every 1000 milliseconds
+    // }
 
     gameOver() {
         this.gameIsOverFlag = true;

@@ -1,5 +1,6 @@
 class UIManager {
-    constructor(lives, money, currentWave, gameScreen, waveSpan, moneySpan, liveSpan, newTowerButton, playField) {
+    constructor(game ,lives, money, currentWave, gameScreen, waveSpan, moneySpan, liveSpan, newTowerButton, playField) {
+        this.game = game;
         this.lives = lives;
         this.money = money;
         this.currentWave = currentWave;
@@ -10,6 +11,7 @@ class UIManager {
         this.newTowerButton = newTowerButton;
         this.playField = playField;
         this.placeTowerImg = newTowerButton;
+        this.uiBarBottomElement = document.querySelector(".ui-bar-bottom");
         this.towers = []; // Initialize towers array
 
         // Bind the handleClick method to the instance
@@ -24,6 +26,8 @@ class UIManager {
     placeTower() {
         this.playField.toggleGridVisibility();
         console.log("Tower place view toggled");
+
+        this.uiBarBottomElement.style.zIndex = "0"; // Hide the UI bar
 
         // Enable pointer events to capture the click
         this.playField.gameContainer.style.pointerEvents = 'auto';
@@ -76,5 +80,6 @@ class UIManager {
 
         // Remove the event listener after placing the tower
         this.playField.gameContainer.removeEventListener('click', this.handleClick);
+        this.uiBarBottomElement.style.zIndex = "1000"; // Show the UI bar
     }
 }

@@ -32,7 +32,7 @@ body {
     display: flex;             
     justify-content: center;   
     align-items: center;       
-    width: 50%;
+    width: auto;
     height: 50%;               
     margin-bottom: 20px;           
 }
@@ -111,7 +111,8 @@ body {
 }
   
 .grid-cell {
-    width: 64px;       /* Width of each cell */
+    width: 64px;
+    position: relative;       /* Width of each cell */
     height: 102.86px;      /* Height of each cell */
     background-color: transparent; /* Default cell color */
     box-sizing: border-box;
@@ -148,36 +149,107 @@ body {
     margin-bottom: 20px; /* Add some margin to the left if needed */
 }
 
+.active-path-cell {
+    background-color: rgba(218, 255, 71, 0.886); /* Light red color for active path cells */
+}
+
+/* Troop Animation */
+/* Troop movement from left to right */
+
+.troop {
+    position: absolute;
+    animation-duration: 1000ms;
+    animation-fill-mode: forwards;
+    background-position: left; /* Align background image to the left */
+}
+
+/* Apply the animations to the troop class as needed */
+.troop-left-right {
+    animation-name: troop-movement-left-right;
+}
+
+.troop-right-left {
+    animation-name: troop-movement-right-left;
+}
+
+.troop-bottom-top {
+    animation-name: troop-movement-bottom-top;
+}
+
+.troop-top-bottom {
+    animation-name: troop-movement-top-bottom;
+}
+
+/* Troop movement from left to right */
+@keyframes troop-movement-left-right {
+    from {
+        left: 0;
+    }
+    to {
+        left: 100%;
+    }
+}
+
+/* Troop movement from right to left */
+@keyframes troop-movement-right-left {
+    from {
+        right: 0;
+    }
+    to {
+        right: 100%;
+    }
+}
+
+/* Troop movement from bottom to top */
+@keyframes troop-movement-bottom-top {
+    from {
+        bottom: 0;
+    }
+    to {
+        bottom: 100%;
+    }
+}
+
+/* Troop movement from top to bottom */
+@keyframes troop-movement-top-bottom {
+    from {
+        top: 0;
+    }
+    to {
+        top: 100%;
+    }
+}
+
 
 /* End-Screen */
 
 .end-screen {
-    padding: 20px;
     height: 720px;
     width: 1280px;
     border: 2px solid #000000;
     display: none;  /* set to flex in js */
     flex-direction: column;
-    align-items:center;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: center; /* Center content vertically */
+    text-align: center; /* Center text horizontally */
 }
+
 .end-screen h1 {
-    text-align:center;
     display: block;
+    text-align: center;
 }
 
 .restart-button {
-    display: flex;
     padding: 10px 10px;
     height: 40px;
     width: 200px;
-    background-color:rgb(131, 197, 255);
+    background-color: rgb(131, 197, 255);
     text-align: center;
     justify-content: center;
-    align-items:center;
-    justify-items:center;
-    align-content:center;
+    align-items: center;
     margin-bottom: 20px;
+    margin-left: auto; /* Center horizontally */
+    margin-right: auto; /* Center horizontally */
 }
 
 .restart-button:hover {
@@ -185,5 +257,7 @@ body {
 }
 
 #end-score {
-    color:rgb(163, 1, 1);
+    color: rgb(163, 1, 1);
 }
+
+

@@ -102,7 +102,7 @@ class Playfield {
             { row: 0, col: 1 }   // right
         ];
 
-        const queue = [{ row: startRow, col: startCol, path: [] }];
+        const queue = [{ row: startRow, col: startCol, path: [{ row: startRow, col: startCol }] }];
         const visited = new Set();
         visited.add(`${startRow},${startCol}`);
 
@@ -132,7 +132,7 @@ class Playfield {
         }
 
         // If no path found, walk straight to the destination through all cells ignoring if occupied or not
-        const straightPath = [];
+        const straightPath = [{ row: startRow, col: startCol }];
         let currentRow = startRow;
         let currentCol = startCol;
 
@@ -147,6 +147,19 @@ class Playfield {
         }
 
         return straightPath.map(({ row, col }) => this.getCellFromRowCol(row, col));
+    }
+
+    markActivePathCells(activePath) {
+        // Remove the 'active-path-cell' class from all cells
+        const allCells = document.querySelectorAll(".grid-cell");
+        allCells.forEach((cell) => {
+            cell.classList.remove("active-path-cell");
+        });
+
+        // Add the 'active-path-cell' class to the cells in the active path
+        activePath.forEach((cell) => {
+            cell.classList.add("active-path-cell");
+        });
     }
 
 }

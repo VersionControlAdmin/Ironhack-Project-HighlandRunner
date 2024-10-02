@@ -1,5 +1,6 @@
 class WaveManager {
-    constructor (playField, currentWave, spawn, destination) {
+    constructor (game ,playField, currentWave, spawn, destination) {
+        this.game = game;
         this.playField = playField; 
         this.currentWave = currentWave;
         this.spawn = spawn;
@@ -12,9 +13,9 @@ class WaveManager {
         console.log(`Starting wave ${this.currentWave}`);
         const lives = 2 * this.currentWave;
         const speed = this.currentWave;
-        const troopCount = this.currentWave * 2;
+        const troopCount = this.currentWave * 1;
         for (let i = 0; i < troopCount; i++) {
-            const newTroop = new Troop(this.playField, this.spawn, lives, speed, this);
+            const newTroop = new Troop(this.game ,this.playField, this.spawn, lives, speed, this);
             this.troops.push(newTroop);
         }
     }
