@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>HighlandRunner - The Game</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./styles/style.css">
+    </head>
+    <body>
+        <!-- Start Screen-->
+        <div class = "start-screen">
+            <h1>HighlandRunner Tower Defense</h1>
+            <div class = "logo-container">
+                <img class = "logo-img" src="./assets/logo/Hillrunner-logo.png">
+            </div>
+            <button class = "start-button">Enter Game</button>
+            <h2>How to Play</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> 
+        </div>
+        <!-- Game Screen-->
+        <div class = "game-screen">
+            <div class = "ui-bar-top">
+                <p>Lives: <span class = "live-count">X</span></p>
+                <p>Current Wave: <span class ="wave-count">x</span></p>
+                <p>Money: <span class ="money-count">X</span></class></p>
+            </div>
+            <div class = "game-container playfield-grid"></div>
+            <div class = "ui-bar-bottom">
+                <img class = "tower-button" id="tower-mk2-img" src="./assets/towers/tower-mk2-inactive.png">
+            </div>
+        </div>
+
+
+        <!-- End Screen-->
+        <div class = "end-screen">
+            <h1>HighlandRunner Tower Defense</h1>
+            <div class = "logo-container">
+                <img class = "logo-img" src="./assets/logo/Hillrunner-logo.png">
+            </div>
+            <h2>Congrats! - You lasted <span id="end-score">X</span> waves!</h2>
+            <button class = "restart-button">Restart Game</button>
+        </div>
+
+
+
+        <script src="./src/playfield.js" defer></script>
+        <script src="./src/troop.js" defer></script>
+        <script src="./src/tower.js" defer></script>
+        <script src="./src/projectile.js" defer></script>
+        <script src="./src/SoundManager.js" defer></script>
+        <script src="./src/WaveManager.js" defer></script>
+        <script src="./src/UIManager.js" defer></script>
+        <script src="./src/game.js" defer></script>
+        <script src="./src/script.js" defer></script>
+    </body>
+</html>
