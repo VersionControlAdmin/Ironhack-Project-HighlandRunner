@@ -26,13 +26,15 @@
         <!-- Game Screen-->
         <div class = "game-screen">
             <div class = "ui-bar-top">
-                <p>Lives: <span class = "live-count">X</span></p>
-                <p>Current Wave: <span class ="wave-count">x</span></p>
-                <p>Money: <span class ="money-count">X</span></class></p>
+                <p><span class = "live-count">X</span></p>
+                <p><span class ="wave-count">x</span></p>
+                <p><span class ="money-count">X</span></class></p>
             </div>
+            <img class="ui-fast-forward-button" src="./assets/ui/fast-forward.png">
             <div class = "game-container playfield-grid"></div>
             <div class = "ui-bar-bottom">
-                <img class = "tower-button" id="tower-mk2-img" src="./assets/towers/tower-mk2-inactive.png">
+                <img class = "tower-button" id="tower-mk2-img" src="./assets/towers/tower_level1-inactive.png">
+                <div class ="remove-tower-button"></div>
             </div>
         </div>
 
@@ -52,7 +54,6 @@
         <script src="./src/playfield.js" defer></script>
         <script src="./src/troop.js" defer></script>
         <script src="./src/tower.js" defer></script>
-        <script src="./src/projectile.js" defer></script>
         <script src="./src/SoundManager.js" defer></script>
         <script src="./src/WaveManager.js" defer></script>
         <script src="./src/UIManager.js" defer></script>

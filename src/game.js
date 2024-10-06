@@ -9,22 +9,27 @@ class Game {
         this.gameContainer = document.querySelector(".game-container");
         this.placeTowerImg = document.querySelector("#tower-mk2-img");
         console.log(this.placeTowerImg);
-        this.lives = 100;
-        this.money = 30;
-        this.currentWave = 1;
+        this.lives = 1;
+        this.money = 150000;
+        this.currentWave = 0;
         this.gameLoopFrequency = 1000/60 //60fps;
         this.gameIsOverFlag = false;
         this.height = 1280;
         this.width = 720;
         this.playFieldRows = 7;
         this.playFieldColumns = 20;
-        
         this.spawnRow = 3;
         this.spawnColumn = 0;
         this.destinationRow = 3;
         this.destinationColumn = 19;
-        this.gameIsOverFlag = false;  
-        
+        this.wavePrepInProgressFlag = false;
+        this.gameIsOverFlag = false;
+        this.dealDamageFlag = true;
+        this.troopsMovingSpeedMs = 1000; 
+        this.fastForwardStatus = false;
+        this.movingTroopsInterval = null;
+        this.dealDamageInterval = null;
+        this.updateGameInterval = null;
         this.initiate();
     }
 
@@ -36,105 +41,103 @@ class Game {
         this.spawn = this.playField.getCellFromRowCol(this.spawnRow, this.spawnColumn);    
         this.destination = this.playField.getCellFromRowCol(this.destinationRow, this.destinationColumn);
         console.log(`Destination from game: ${this.destination}`)
-        this.uiManager = new UIManager(this ,this.lives,this.money,this.currentWave, this.gameScreen, this.waveSpan, this.moneySpan, this.liveSpan, this.placeTowerImg, this.playField);
+        this.soundManager = new SoundManager ();
+        this.soundManager.playBackgroundMusic();
+        this.uiManager = new UIManager(this ,this.lives,this.money,this.currentWave, this.gameScreen, this.waveSpan, this.moneySpan, this.liveSpan, this.placeTowerImg, this.playField, this.soundManager);
         this.waveManager = new WaveManager(this ,this.playField, this.currentWave, this.spawn, this.destination);
         // this.playField.toggleGridVisibility();
         this.uiManager.initiate();
-        this.waveManager.startWave();
+        this.uiManager.updateUiBarTop(this.lives, this.money, this.currentWave);
         // all event listeners
-        setTimeout(() => this.gameLoop(), 1000);
+        this.updateGameLoopIntervals();
     }
 
-    gameLoop() {
+    gameLoopMovingTroops() {
+        this.moveTroops();
+    }
 
-        // troops walking
+    gameLoopUpdateGame() {
+        this.checkStartNewWave();
+        this.checkGameOver();
+        this.handleDamageAndShooting();
+        this.updateUI();
+    }
+    
+    moveTroops() {
         let currentPathTroops = this.playField.findPathToDestination(this.spawnRow, this.spawnColumn, this.destinationRow, this.destinationColumn);   
-        console.log(currentPathTroops);
         this.playField.markActivePathCells(currentPathTroops);
         if (this.waveManager.troops.length > 0) { 
             this.waveManager.troops.forEach((troop) => {
                 troop.move(currentPathTroops, this.destination);
             });
         }
-        if (this.lives <= 0) {
-            this.gameOver();
-            return;
-        }
-
-        // checking if damage is taken for each troop + tower shooting animation
-        this.waveManager.troops.forEach((troop) => {
-            this.uiManager.towers.forEach((tower) => {
-                if (tower.isInRadius(troop)) {
-                    troop.takingDamage(tower);
-                }
-            });
-        });
-
-        // checking if tower is in range of any troop and should be doing a shooting animation
-        this.uiManager.towers.forEach((tower) => {
-            this.waveManager.troops.forEach((troop) => {
-                if (tower.isInRadius(troop)) {
-                    tower.startShootingAnimation();
-                } else {
-                    tower.stopShootingAnimation();
-                }
-            });
-        });
-
-        // checking if there are any troops left on the field and no more needed for spawn
-        if (this.waveManager.troops.length === 0) {
-            // this.waveManager.currentWave += 1;
-            this.currentWave +=1;
-            this.waveManager.currentWave = this.currentWave;
-            setTimeout(() => this.waveManager.startWave(), 3000)
-        }
-
-
-        setTimeout(() => this.gameLoop(), 1000); // Call gameLoop every second
-    }
-
-    // gameLoop() {
-    //     if (this.gameIsOverFlag) return;
-
-    //     // Checking if damage is taken for each troop + tower shooting animation
-    //     this.waveManager.troops.forEach((troop) => {
-    //         this.uiManager.towers.forEach((tower) => {
-    //             if (tower.isInRadius(troop)) {
-    //                 tower.startShootingAnimation();
-    //                 troop.takingDamage(tower);
-    //             } else {
-    //                 tower.stopShootingAnimation();
-    //             }
-    //         });
-    //     });
-
-    //     if (this.lives <= 0) {
-    //         this.gameOver();
-    //         return;
-    //     }
-
-    //     setTimeout(() => this.gameLoop(), 100); // Call gameLoop every 100 milliseconds
-    // }
-
-    // movementLoop() {
-    //     if (this.gameIsOverFlag) return;
-
-    //     // Troops walking
-    //     let currentPathTroops = this.playField.findPathToDestination(this.spawnRow, this.spawnColumn, this.destinationRow, this.destinationColumn);
-    //     console.log(currentPathTroops);
-    //     if (this.waveManager.troops.length > 0) {
-    //         this.waveManager.troops.forEach((troop) => {
-    //             troop.move(currentPathTroops);
-    //         });
-    //     }
-
-    //     setTimeout(() => this.movementLoop(), 1000); // Call movementLoop every 1000 milliseconds
-    // }
-
-    gameOver() {
-        this.gameIsOverFlag = true;
-        this.endScreen.style.display = "block";
-        this.gameScreen.style.display = "none";
     }
     
+    checkGameOver() {
+        if (this.lives <= 0) {
+            this.endScreen.style.display = "block";
+            this.gameScreen.style.display = "none";
+            this.uiManager.updateEndScreen();
+            this.soundManager.stopBackgroundMusic();
+            return;
+        }
+    }
+    
+    handleDamageAndShooting() {
+        this.uiManager.towers.forEach((tower) => {
+            let firstTroopInRadius = null;
+    
+            for (let troop of this.waveManager.troops) {
+                if (tower.isInRadius(troop)) {
+                    firstTroopInRadius = troop;
+                    break;
+                }
+            }
+    
+            if (firstTroopInRadius) {
+                if(this.dealDamageFlag) {
+                    firstTroopInRadius.takingDamage(tower);
+                }
+                tower.startShootingAnimation(firstTroopInRadius);
+            } else {
+                tower.stopShootingAnimation();
+            }
+        });
+        this.dealDamageFlag = false;
+    }
+    
+    checkStartNewWave() {
+        if (this.waveManager.troops.length === 0 && this.wavePrepInProgressFlag === false) {
+            this.currentWave += 1;
+            this.waveManager.currentWave = this.currentWave;
+            setTimeout(() => this.waveManager.startWave(this.currentWave), 3000);
+            this.wavePrepInProgressFlag = true;
+        }
+    }
+    
+    updateUI() {
+        this.uiManager.updateUiBarTop(this.lives, this.money, this.currentWave);
+    }
+
+    updateGameLoopIntervals() {
+        // Clear existing intervals
+        if (this.movingTroopsInterval) clearInterval(this.movingTroopsInterval);
+        if (this.dealDamageInterval) clearInterval(this.dealDamageInterval);
+        if (this.updateGameInterval) clearInterval(this.updateGameInterval);
+
+        // Set new intervals based on the fast forward status
+        const speedMultiplier = this.fastForwardStatus ? 0.5 : 1;
+
+        this.movingTroopsInterval = setInterval(() => {
+            this.gameLoopMovingTroops();
+        }, this.troopsMovingSpeedMs * speedMultiplier);
+
+        this.dealDamageInterval = setInterval(() => {
+            this.dealDamageFlag = true;
+        }, 500 * speedMultiplier);
+
+        this.updateGameInterval = setInterval(() => {
+            this.gameLoopUpdateGame();
+        }, 100 * speedMultiplier);
+    }
 }

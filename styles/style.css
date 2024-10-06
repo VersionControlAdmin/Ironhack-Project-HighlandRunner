@@ -78,13 +78,53 @@ body {
 }
 
 .ui-bar-top {
-    display: flex;
-    justify-content: space-evenly;
-    padding: 0px;
-    margin: 0;
-    color:white;
-    font-size:larger;
+    position: relative;
+    width: 100%;
+    height: 24px; /* Adjust height as needed */
+    color: white;
+    font-size: larger;
     font-weight: bolder;
+}
+
+.live-count, .money-count, .wave-count {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: large;
+    font-family: 'MedievalSharp', cursive;
+    padding: 0;
+    margin: 0;
+}
+
+.live-count {
+    left: 22%; 
+}
+
+.wave-count {
+    left: 57%; 
+}
+
+.money-count {
+    left: 87%; 
+}
+
+.live-count {
+    color: #ffffff; 
+}
+
+.money-count,.wave-count {
+    color: #100101; 
+}
+
+.ui-fast-forward-button {
+    position: absolute;
+    top:55px;
+    width: 100px;
+    height: auto;
+    right: 0;
+    padding: 0px;
+    margin: 0px;
+    z-index: 11;
 }
 
 .playfield-grid {
@@ -104,10 +144,10 @@ body {
     width: 100%; /* Cover the entire width of the game screen */
     height: 100%; /* Cover the entire height of the game screen */
     pointer-events: none; /* Ignore mouse events */
-    z-index: 10; /* Ensure the grid is in the foreground */
     display: grid;
     grid-template-columns: repeat(20, 64px); /* 20 columns, each 64px */
     grid-template-rows: repeat(7, 102.86px); /* 7 rows, each 102.86px */
+    z-index: 10;
 }
   
 .grid-cell {
@@ -120,11 +160,11 @@ body {
 
 .show-grid .grid-cell {
     border: 3px solid rgba(0, 0, 0, 0.2); /* Light border when grid is visible */
-  }
+}
 
 .show-grid .grid-cell.occupied {
     background-color: rgba(255, 99, 71, 0.5); /* Light border when grid is visible */
-  }
+}
 
 .show-grid .grid-cell:not(.occupied) {
     background-color: rgba(138, 255, 71, 0.5); /* Default cell color */
@@ -149,8 +189,22 @@ body {
     margin-bottom: 20px; /* Add some margin to the left if needed */
 }
 
+.tower {
+    z-index: 10;
+}
+
+.remove-tower-button {
+    position: absolute;
+    width: 135px;
+    height: 135px;
+    bottom: 0; /* Align to the bottom of the parent */
+    right: 0; /* Align to the right of the parent */
+    margin: 0;
+    padding: 0;
+}
+
 .active-path-cell {
-    background-color: rgba(218, 255, 71, 0.886); /* Light red color for active path cells */
+    background-color: rgba(71, 163, 255, 0.5); /* Light blue color for active path cells */
 }
 
 /* Troop Animation */
@@ -163,61 +217,82 @@ body {
     background-position: left; /* Align background image to the left */
 }
 
-/* Apply the animations to the troop class as needed */
+/* Normal speed animations */
 .troop-left-right {
-    animation-name: troop-movement-left-right;
+    animation: move-left-right 1s linear infinite;
 }
 
 .troop-right-left {
-    animation-name: troop-movement-right-left;
-}
-
-.troop-bottom-top {
-    animation-name: troop-movement-bottom-top;
+    animation: move-right-left 1s linear infinite;
 }
 
 .troop-top-bottom {
-    animation-name: troop-movement-top-bottom;
+    animation: move-top-bottom 1s linear infinite;
 }
 
-/* Troop movement from left to right */
-@keyframes troop-movement-left-right {
-    from {
-        left: 0;
-    }
-    to {
-        left: 100%;
-    }
+.troop-bottom-top {
+    animation: move-bottom-top 1s linear infinite;
 }
 
-/* Troop movement from right to left */
-@keyframes troop-movement-right-left {
-    from {
-        right: 0;
-    }
-    to {
-        right: 100%;
-    }
+/* Fast forward speed animations */
+.troop-left-right-fast {
+    animation: move-left-right 0.5s linear infinite;
 }
 
-/* Troop movement from bottom to top */
-@keyframes troop-movement-bottom-top {
-    from {
-        bottom: 0;
-    }
-    to {
-        bottom: 100%;
-    }
+.troop-right-left-fast {
+    animation: move-right-left 0.5s linear infinite;
 }
 
-/* Troop movement from top to bottom */
-@keyframes troop-movement-top-bottom {
-    from {
-        top: 0;
-    }
-    to {
-        top: 100%;
-    }
+.troop-top-bottom-fast {
+    animation: move-top-bottom 0.5s linear infinite;
+}
+
+.troop-bottom-top-fast {
+    animation: move-bottom-top 0.5s linear infinite;
+}
+
+/* Keyframes for animations */
+@keyframes move-left-right {
+    from { transform: translateX(0); }
+    to { transform: translateX(100%); }
+}
+
+@keyframes move-right-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+
+@keyframes move-top-bottom {
+    from { transform: translateY(0); }
+    to { transform: translateY(100%); }
+}
+
+@keyframes move-bottom-top {
+    from { transform: translateY(0); }
+    to { transform: translateY(-100%); }
+}
+
+.upgrade-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.level-display {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 4px;
 }
 
 

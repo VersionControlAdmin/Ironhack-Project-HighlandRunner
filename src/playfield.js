@@ -130,23 +130,7 @@ class Playfield {
                 }
             }
         }
-
-        // If no path found, walk straight to the destination through all cells ignoring if occupied or not
-        const straightPath = [{ row: startRow, col: startCol }];
-        let currentRow = startRow;
-        let currentCol = startCol;
-
-        while (currentRow !== destRow || currentCol !== destCol) {
-            if (currentRow < destRow) currentRow++;
-            else if (currentRow > destRow) currentRow--;
-
-            if (currentCol < destCol) currentCol++;
-            else if (currentCol > destCol) currentCol--;
-
-            straightPath.push({ row: currentRow, col: currentCol });
-        }
-
-        return straightPath.map(({ row, col }) => this.getCellFromRowCol(row, col));
+        return null;
     }
 
     markActivePathCells(activePath) {
