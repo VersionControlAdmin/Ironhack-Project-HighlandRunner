@@ -100,6 +100,15 @@ class Troop {
             let minDistance = Infinity;
             for (let i = 0; i < activeRoute.length; i++) {
                 const cell = activeRoute[i];
+                /**
+                 * Calculates the Euclidean distance between the current cell and a given cell.
+                 * 
+                 * @param {HTMLElement} cell - The target cell to calculate the distance to.
+                 * @returns {number} The distance between the current cell and the target cell.
+                 * 
+                 * Math.hypot() is used to calculate the Euclidean distance between two points
+                 * in a plane. It returns the square root of the sum of the squares of its arguments.
+                 */
                 const distance = Math.hypot(
                     cell.offsetLeft - this.currentCell.offsetLeft,
                     cell.offsetTop - this.currentCell.offsetTop

@@ -180,7 +180,7 @@ class Tower {
         const deltaX = troopRect.left + (troopRect.width / 2) - (towerRect.left + (towerRect.width / 2));
         const deltaY = troopRect.top + (troopRect.height / 2) - (towerRect.top + (towerRect.height / 2));
 
-        // Adjust the angle by 90 degrees to correct the direction
+        // Adjust the angle by 90 degrees to correct the direction, The Math.atan2(deltaY, deltaX) function in JavaScript is used to calculate the angle (in radians) between the positive x-axis and the point given by the coordinates (deltaX, deltaY). This is particularly useful in scenarios where you need to determine the direction from one point to another in a 2D space.
         const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 90;
 
         // Rotate the tower to face the troop
