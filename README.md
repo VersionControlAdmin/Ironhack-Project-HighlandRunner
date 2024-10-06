@@ -1,6 +1,6 @@
 ## HighlandRunner Tower Defense Game Documentation
 
-This document provides an overview of the HighlandRunner Tower Defense game code.
+This document provides an overview of the HighlandRunner Tower Defense game code, which was generated as part of a one week project as part of the 3rd week of the Ironhack Bootcamp Berlin, Germany.
 
 ### Game Overview
 
@@ -106,8 +106,4 @@ The game code is structured into several classes:
 
 ### `styles/style.css`
 
-- **Purpose:** Contains the CSS rules for styling the game's visual appearance.
-
-## How to Play
-
-1. Start the game by clicking the 
+- **Purpose:** Contains the CSS rules for styling the game's visual appearance. 
