@@ -26,6 +26,7 @@ body {
 .start-screen h1 {
     text-align:center;
     display: block;
+    padding:0;
 }
 
 .logo-container {
@@ -33,7 +34,7 @@ body {
     justify-content: center;   
     align-items: center;       
     width: auto;
-    height: 50%;               
+    height: 40%;               
     margin-bottom: 20px;           
 }
 .logo-img {
@@ -64,6 +65,15 @@ body {
 .start-screen p {
     max-width: 50%;
     text-align: center;
+}
+
+.how-to-play-section {
+    display: flex;
+    flex-direction: row;
+}
+
+.how-to-play-section h2 {
+    padding: 10px;
 }
 
 /* Game-Screen */
@@ -273,7 +283,7 @@ body {
 }
 
 .upgrade-button {
-    background-color: #4CAF50; /* Green */
+    background-color: #964108; /* Green */
     border: none;
     color: white;
     padding: 10px 24px;
@@ -287,7 +297,7 @@ body {
 }
 
 .level-display {
-    background-color: #f1f1f1;
+    background-color: #b49862;
     border: 1px solid #ccc;
     padding: 5px;
     text-align: center;

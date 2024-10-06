@@ -9,8 +9,8 @@ class Game {
         this.gameContainer = document.querySelector(".game-container");
         this.placeTowerImg = document.querySelector("#tower-mk2-img");
         console.log(this.placeTowerImg);
-        this.lives = 1;
-        this.money = 150000;
+        this.lives = 100;
+        this.money = 170;
         this.currentWave = 0;
         this.gameLoopFrequency = 1000/60 //60fps;
         this.gameIsOverFlag = false;
@@ -79,8 +79,15 @@ class Game {
             this.gameScreen.style.display = "none";
             this.uiManager.updateEndScreen();
             this.soundManager.stopBackgroundMusic();
+            this.stopGameLoop();
             return;
         }
+    }
+
+    stopGameLoop() {
+        if (this.movingTroopsInterval) clearInterval(this.movingTroopsInterval);
+        if (this.dealDamageInterval) clearInterval(this.dealDamageInterval);
+        if (this.updateGameInterval) clearInterval(this.updateGameInterval);
     }
     
     handleDamageAndShooting() {

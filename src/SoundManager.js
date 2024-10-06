@@ -7,7 +7,9 @@ class SoundManager {
     }
     
     playWeaponShootingSound() {
-        this.sounds.weaponShooting.play();
+        const weaponShootingSound = new Audio('./assets/sounds/weapon-shooting.wav');
+        weaponShootingSound.volume = 0.25;
+        weaponShootingSound.play();
     }
     
     playBackgroundMusic() {

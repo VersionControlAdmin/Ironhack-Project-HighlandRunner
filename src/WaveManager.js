@@ -11,18 +11,19 @@ class WaveManager {
 
     startWave(currentWave) {
         console.log(`Starting wave ${currentWave}`);
-        this.game.troopsMovingSpeedMs = Math.max(1000*(1-currentWave/100),500); // increases troops moving speed gradually, but gurantees one damage per tower per field can be dealt.
-        const liveMultiplier = Math.max(1*(1+Math.floor(currentWave*Math.random()/2)),this.lastRoundsBasisLiveMultiplier); // increases troops health gradually, but gurantees one damage per tower per field can be dealt.
+        this.game.troopsMovingSpeedMs = Math.max(1000 * (1 - currentWave / 100), 500); // increases troops moving speed gradually, but guarantees one damage per tower per field can be dealt.
+        const liveMultiplier = Math.max(1 * (1 + Math.floor(currentWave * Math.random() / 2)), this.lastRoundsBasisLiveMultiplier); // increases troops health gradually, but guarantees one damage per tower per field can be dealt.
         this.lastRoundsBasisLiveMultiplier = liveMultiplier;
         const troopCount = currentWave * 1;
         const deploymentInterval = 1000; // Time in milliseconds between each troop deployment
 
         let deployedTroops = 0;
+
         const deployTroop = () => {
             if (deployedTroops < troopCount) {
                 let currentEnemyType = "daemonLady";
                 if (currentWave > 10 && deployedTroops % Math.max(1, Math.floor(troopCount / (currentWave / 4))) === 0) {
-                    currentEnemyType = "finalBoss"; 
+                    currentEnemyType = "finalBoss";
                 } else if (currentWave > 5 && deployedTroops % Math.max(1, Math.floor(troopCount / (currentWave / 2))) === 0) {
                     currentEnemyType = "daemonBoss";
                 }

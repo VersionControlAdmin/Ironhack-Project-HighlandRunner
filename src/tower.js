@@ -96,6 +96,11 @@ class Tower {
     }
 
     handleClickUpgrade() {
+        // Do nothing if the grid is actively shown
+        if (this.playField.gameContainer.classList.contains("show-grid")) {
+            return;
+        }
+
         // Display the upgrade button and current level
         if (this.towerLevel < this.towerUpgradeData.length) {
             const upgradeButton = document.createElement('button');
@@ -104,6 +109,7 @@ class Tower {
             upgradeButton.style.left = `${this.cell.getBoundingClientRect().left}px`;
             upgradeButton.style.top = `${this.cell.getBoundingClientRect().top - 30}px`;
             upgradeButton.style.zIndex = 1000;
+            upgradeButton.classList.add("upgrade-button");
             this.upgradeButton = upgradeButton;
             document.body.appendChild(this.upgradeButton);
 
@@ -113,6 +119,7 @@ class Tower {
             levelDisplay.style.left = `${this.cell.getBoundingClientRect().left}px`;
             levelDisplay.style.top = `${this.cell.getBoundingClientRect().top - 50}px`;
             levelDisplay.style.zIndex = 1000;
+            levelDisplay.classList.add("level-display");
             this.levelDisplay = levelDisplay;
             document.body.appendChild(this.levelDisplay);
 
@@ -139,15 +146,22 @@ class Tower {
     }
 
     isInRadius(troop) {
+        // Get the row number of the tower's cell
         const towerRow = parseInt(this.cell.dataset.row);
+        // Get the column number of the tower's cell
         const towerCol = parseInt(this.cell.dataset.col);
 
+        // Get the row number of the troop's current cell
         const troopRow = parseInt(troop.currentCell.dataset.row);
+        // Get the column number of the troop's current cell
         const troopCol = parseInt(troop.currentCell.dataset.col);
 
+        // Calculate the absolute difference in rows between the tower and the troop
         const rowDifference = Math.abs(towerRow - troopRow);
+        // Calculate the absolute difference in columns between the tower and the troop
         const colDifference = Math.abs(towerCol - troopCol);
 
+        // Check if the troop is within the shooting radius of the tower
         return rowDifference <= this.radiusCellsShooting && colDifference <= this.radiusCellsShooting;
     }
 
