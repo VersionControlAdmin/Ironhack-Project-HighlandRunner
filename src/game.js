@@ -11,6 +11,7 @@ class Game {
         console.log(this.placeTowerImg);
         this.lives = 100;
         this.money = 170;
+        this.score = this.money;
         this.currentWave = 0;
         this.gameLoopFrequency = 1000/60 //60fps;
         this.gameIsOverFlag = false;

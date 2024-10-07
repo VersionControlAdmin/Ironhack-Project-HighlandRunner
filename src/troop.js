@@ -23,7 +23,7 @@ class Troop {
                 this.troop.style.backgroundImage = "url(./assets/troops/daemon-bird-walking.gif)";
                 break;
             case "finalBoss":
-                this.troopLives = 10 * this.troopLiveMultiplier;
+                this.troopLives = 5 * this.troopLiveMultiplier;
                 this.troop.style.backgroundImage = "url(./assets/troops/daemon-man-walking.gif)";
                 break;
             default:
