@@ -92,7 +92,11 @@ class Tower {
         this.cell.appendChild(this.tower);
 
         // Add click event listener for the upgrade option
-        this.tower.addEventListener('click', () => this.handleClickUpgrade());
+        this.tower.addEventListener('click', () => {
+            this.handleClickUpgrade();
+            this.highlightRadius();
+            }
+        );
     }
 
     handleClickUpgrade() {
@@ -136,6 +140,7 @@ class Tower {
                     document.body.removeChild(upgradeButton);
                     document.body.removeChild(levelDisplay);
                     document.removeEventListener('click', handleClickOutside);
+                    this.clearHighlightRadius();
                 }
             };
 
@@ -212,6 +217,7 @@ class Tower {
         else {
             alert("Insufficient funds for upgrading the selected tower.")
         }
+        this.clearHighlightRadius();
     }
 
     updateTowerStats() {
@@ -221,6 +227,27 @@ class Tower {
         this.towerLevel = upgradeData.towerLevel;
         this.radiusCellsShooting = upgradeData.radiusCellsShooting;
         this.towerPrice = upgradeData.towerUpgradePricing;
+    }
+
+    highlightRadius() {
+        const towerRow = parseInt(this.cell.dataset.row);
+        const towerCol = parseInt(this.cell.dataset.col);
+
+        for (let row = towerRow - this.radiusCellsShooting; row <= towerRow + this.radiusCellsShooting; row++) {
+            for (let col = towerCol - this.radiusCellsShooting; col <= towerCol + this.radiusCellsShooting; col++) {
+                if (row >= 0 && col >= 0 && row < this.playField.height && col < this.playField.width) {
+                    const cell = this.playField.gameContainer.querySelector(`.grid-cell[data-row="${row}"][data-col="${col}"]`);
+                    if (cell) {
+                        cell.classList.add('highlighted-cell');
+                    }
+                }
+            }
+        }
+    }
+
+    clearHighlightRadius() {
+        const highlightedCells = this.playField.gameContainer.querySelectorAll('.highlighted-cell');
+        highlightedCells.forEach(cell => cell.classList.remove('highlighted-cell'));
     }
     
 }

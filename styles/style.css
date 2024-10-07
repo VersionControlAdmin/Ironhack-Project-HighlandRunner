@@ -6,9 +6,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:#F4E9B6;
+    background-color: #F4E9B6;
     margin: 0;
     padding: 0;
+    background-image: url("../assets/logo/background-html.png");
+    background-size: cover; /* Ensure the background image covers the entire screen */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
 }
 
 /* Start Screen Section */
@@ -18,6 +21,7 @@ body {
     height: 720px;
     width: 1280px;
     border: 2px solid #000000;
+    background-color:#F4E9B6;
     display: flex;  /* set to flex in js */
     flex-direction: column;
     align-items:center;
@@ -68,9 +72,18 @@ body {
     text-align: center;
 }
 
+#text-divider-start-screen {
+    border: none; /* Remove default border */
+    height: 2px; /* Set height */
+    background-color: black; /* Set color */
+    width: 1000px; /* Set width to 100% */
+}
+
 .how-to-play-section {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .how-to-play-section h2 {
@@ -140,8 +153,9 @@ body {
 }
 
 .ui-fast-forward-button.active {
-    background-color: #d3d3d3; /* Change background color to indicate active state */
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2); /* Create an inset shadow to give a pressed-in effect */
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2), /* Create an inset shadow to give a pressed-in effect */
+                inset 0 -3px 5px rgba(255, 255, 255, 0.2); /* Add a lighter inset shadow for more realism */
+    transform: translateY(2px); /* Slightly move the button down to simulate a pressed effect */
 }
 
 .playfield-grid {
@@ -312,6 +326,10 @@ body {
     border-radius: 4px;
 }
 
+.highlighted-cell {
+    background-color: rgba(53, 2, 2, 0.465); /* Light gray with 0.3 transparency */
+}
+
 
 /* End-Screen */
 
@@ -319,6 +337,7 @@ body {
     height: 720px;
     width: 1280px;
     border: 2px solid #000000;
+    background-color:#F4E9B6;
     display: none;  /* set to flex in js */
     flex-direction: column;
     align-items: center;

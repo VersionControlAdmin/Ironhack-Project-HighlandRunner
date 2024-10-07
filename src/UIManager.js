@@ -203,6 +203,7 @@ class UIManager {
     toggleFastForwardMode() {
         this.game.fastForwardStatus = !this.game.fastForwardStatus;
         this.game.updateGameLoopIntervals();
+        this.fastForwardButton.classList.toggle('active');
     
         // Update troop animation classes based on fast forward status
         const troops = document.querySelectorAll('.troop');

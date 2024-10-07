@@ -8,6 +8,7 @@ class Troop {
         this.destinationCell = this.waveManager.destination;
         this.enemyType = enemyType;
         this.troopLives = null;
+        this.troopReward = null;
         this.maxLives = null; // Store the maximum lives for the status bar calculation
         this.troop = document.createElement("div");
         this.troopLiveMultiplier = troopLiveMultiplier;
@@ -16,18 +17,22 @@ class Troop {
         switch(this.enemyType) {
             case "daemonLady":
                 this.troopLives = 1 * this.troopLiveMultiplier;
+                this.troopReward = 10;
                 this.troop.style.backgroundImage = "url(./assets/troops/daemon-lady-walking.gif)";
                 break;
             case "daemonBoss":
-                this.troopLives = 3 * this.troopLiveMultiplier;
+                this.troopLives = 5 * this.troopLiveMultiplier;
+                this.troopReward = 30;
                 this.troop.style.backgroundImage = "url(./assets/troops/daemon-bird-walking.gif)";
                 break;
             case "finalBoss":
-                this.troopLives = 5 * this.troopLiveMultiplier;
+                this.troopLives = 10 * this.troopLiveMultiplier;
+                this.troopReward = 55;
                 this.troop.style.backgroundImage = "url(./assets/troops/daemon-man-walking.gif)";
                 break;
             default:
                 this.troopLives = 1 * this.troopLiveMultiplier;
+                this.troopReward = 10;
                 this.troop.style.backgroundImage = "url(./assets/troops/daemon-lady-walking.gif)";
                 break;  
         }
@@ -123,15 +128,6 @@ class Troop {
         // Determine the next cell in the route
         const nextIndex = currentIndex + 1;
     
-        if (nextIndex >= activeRoute.length) {
-            console.log("Troop has reached the end of the route.");
-            this.troop.remove();
-            this.waveManager.removeTroop(this); // Remove the troop from the DOM
-            this.game.lives -= 1; // Reduce game lives by one
-            console.log(`Game lives remaining: ${this.game.lives}`);
-            return;
-        }
-    
         const nextCell = activeRoute[nextIndex];
         if (!nextCell) {
             console.error("Next cell is null.");
@@ -158,7 +154,7 @@ class Troop {
         if (this.currentCell === this.destinationCell) {
             console.log("Troop has reached the destination.");
             this.troop.remove();
-            this.waveManager.removeTroop(this); // Remove the troop from the DOM
+            this.waveManager.removeTroop(this, false); // Remove the troop from the DOM
             this.game.lives -= 1; // Reduce game lives by one
             console.log(`Game lives remaining: ${this.game.lives}`);
             return;
@@ -166,15 +162,6 @@ class Troop {
     
         // Determine the cell after the next cell in the route
         const afterNextIndex = nextIndex + 1;
-    
-        if (afterNextIndex >= activeRoute.length) {
-            console.log("Troop has reached the end of the route.");
-            this.troop.remove();
-            this.waveManager.removeTroop(this); // Remove the troop from the DOM
-            this.game.lives -= 1; // Reduce game lives by one
-            console.log(`Game lives remaining: ${this.game.lives}`);
-            return;
-        }
     
         const afterNextCell = activeRoute[afterNextIndex];
         if (!afterNextCell) {
@@ -211,7 +198,7 @@ class Troop {
             this.troopLives -= tower.damage;
             if (this.troopLives <= 0) {
                 this.troop.remove();
-                this.waveManager.removeTroop(this);
+                this.waveManager.removeTroop(this, true);
             } else {
                 // Update the status bar width based on the remaining lives
                 const livesPercentage = (this.troopLives / this.maxLives) * 100;
